@@ -1,6 +1,6 @@
 const Notification = ({ message, color }) => {
   if (message !== '') {
-    return <p id='notification' style={{ color:color, 'border-color':color }}>{message}</p>
+    return <p id='notification' style={{ color: color, borderColor: color }}>{message}</p>
   }
 }
 

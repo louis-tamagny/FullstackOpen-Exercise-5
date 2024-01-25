@@ -65,7 +65,10 @@ const App = () => {
         { headers: { 'Authorization': 'Bearer '+ user.token } })
 
       blogFormRef.current.toggleVisibility()
-      setBlogs(blogs.concat(response.data))
+      const completeNewUser = response.data
+      completeNewUser.user = { username: user.username, name: user.name, id: user.id }
+      console.log(completeNewUser)
+      setBlogs(blogs.concat(completeNewUser))
       displayMessage(`a new blog ${response.data.title} by ${response.data.author} added`, 'green')
 
     } catch (error) {
