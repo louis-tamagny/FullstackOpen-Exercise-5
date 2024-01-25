@@ -76,6 +76,19 @@ const App = () => {
     }
   }
 
+  const handleLike = async (blog) => {
+    try {
+      await axios.put(`/api/blogs/${blog.id}`,
+        { ...blog, likes: blog.likes + 1 },
+        { headers: { 'Authorization': 'Bearer '+ user.token } })
+
+      blog.likes++
+      displayMessage(`likes for ${blog.title} have been updated : ${blog.likes}`, 'green')
+    } catch (error) {
+      displayMessage(error.response.data.error, 'red')
+    }
+  }
+
   if (user === null) {
     return (
       <div>
@@ -103,7 +116,7 @@ const App = () => {
         <BlogForm handleCreateBlog={handleCreateBlog}/>
       </Togglable>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} handleLike={handleLike} />
       )}
     </div>
   )

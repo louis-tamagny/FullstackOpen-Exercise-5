@@ -55,11 +55,15 @@ blogsRouter.delete('/:id', async (request, response) => {
 })
 
 blogsRouter.put('/:id', async (request, response) => {
+  const { title, author, url, likes } = request.body
+  if (!(title&&url&&likes)) {
+    return response.status(400).json({ error: 'invalid request: a field is undefined' })
+  }
   await Blog.updateOne({ _id: request.params.id }, {
-    likes: request.body.likes,
-    url: request.body.url,
-    author: request.body.author,
-    title: request.body.title
+    likes: likes,
+    url: url,
+    author: author,
+    title: title
   })
   response.status(200).end()
 })
