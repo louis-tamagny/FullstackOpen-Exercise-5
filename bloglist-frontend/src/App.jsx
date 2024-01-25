@@ -33,6 +33,8 @@ const App = () => {
     setTimeout(() => setMessage(''), 5000)
   }
 
+  const sortBlogs = () => blogs.sort((a, b) => { return b.likes - a.likes })
+
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
@@ -89,6 +91,20 @@ const App = () => {
     }
   }
 
+  const handleRemove = async (blog) => {
+    if (!window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {return null}
+
+    try {
+      console.log('trying to delete', blog)
+      await axios.delete(`/api/blogs/${blog.id}`,
+        { headers: { 'Authorization': 'Bearer '+ user.token } })
+      setBlogs(blogs.filter((b) => b.id !== blog.id))
+      displayMessage(`${blog.title} was deleted successfully`, 'green')
+    } catch (error) {
+      displayMessage(error.response.data.error, 'red')
+    }
+  }
+
   if (user === null) {
     return (
       <div>
@@ -115,8 +131,10 @@ const App = () => {
       <Togglable buttonLabel='new blog' ref={blogFormRef}>
         <BlogForm handleCreateBlog={handleCreateBlog}/>
       </Togglable>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} handleLike={handleLike} />
+      {sortBlogs().map(blog =>
+        <Blog key={blog.id} blog={blog}
+          handleLike={() => handleLike(blog) }
+          handleRemove={() => handleRemove(blog) } />
       )}
     </div>
   )
