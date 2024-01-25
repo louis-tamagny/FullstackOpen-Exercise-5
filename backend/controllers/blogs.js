@@ -16,7 +16,7 @@ blogsRouter.post('', async (request, response) => {
   const user = request.user
 
   if (!request.body.url || !request.body.title) {
-    return response.status(400).json('{error: title or url missing}')
+    return response.status(400).json({ error: 'title or url missing' })
   }
 
   const { title, author, url, likes } = request.body

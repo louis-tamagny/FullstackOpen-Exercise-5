@@ -11,12 +11,37 @@ module.exports = {
   parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
   settings: { react: { version: '18.2' } },
   plugins: ['react-refresh'],
-  rules: {
+  'rules': {
+    'indent': [
+      'error',
+      2
+    ],
+    'linebreak-style': [
+      'error',
+      'unix'
+    ],
+    'quotes': [
+      'error',
+      'single'
+    ],
+    'semi': [
+      'error',
+      'never'
+    ],
+    'eqeqeq': 'error',
+    'no-trailing-spaces': 'error',
+    'object-curly-spacing': [
+      'error', 'always'
+    ],
+    'arrow-spacing': [
+      'error', { 'before': true, 'after': true }
+    ],
+    'no-console':0,
     'react-refresh/only-export-components': [
       'warn',
       { allowConstantExport: true },
     ],
-    'react/prop-types': false,
-    'eqeqeq': always
+    'react/prop-types': 0,
+    'react/display-name': 0
   },
 }
