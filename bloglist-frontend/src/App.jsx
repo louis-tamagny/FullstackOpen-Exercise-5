@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
-import ErrorMessage from './components/ErrorMessage'
+import Notification from './components/Notification'
 import blogService from './services/blogs'
 import axios from 'axios'
 
@@ -10,6 +10,11 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState('')
+  const [messageColor, setMessageColor] = useState('red')
+
+  const [blogTitle, setBlogTitle] = useState('')
+  const [blogAuthor, setBlogAuthor] = useState('')
+  const [blogUrl, setBlogUrl] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -24,8 +29,9 @@ const App = () => {
     }
   }, [])
 
-  const displayMessage = (text) => {
+  const displayMessage = (text, color) => {
     setMessage(text)
+    setMessageColor(color)
     setTimeout(() => setMessage(''), 5000)
   }
 
@@ -39,29 +45,53 @@ const App = () => {
         setUsername('')
         setPassword('')
         window.localStorage.setItem('loggedInUser', JSON.stringify(response.data))
+        displayMessage('Login successful !', 'green')
       }
     } catch (error) {
-      displayMessage(error.response.data.error)
+      displayMessage(error.response.data.error, 'red')
     }
   }
   const handleLogout = async (event) => {
     event.preventDefault()
     window.localStorage.removeItem('loggedInUser')
     setUser(null)
+    displayMessage('Logout successful !', 'green')
+  }
+
+  const handleCreateBlog = async (event) => {
+    event.preventDefault()
+    try {
+      const response = await axios.post('/api/blogs', {
+          title: blogTitle,
+          author: blogAuthor,
+          url: blogUrl
+        }, {
+          headers: {
+            'Authorization': 'Bearer '+ user.token
+          }
+      })
+      setBlogs(blogs.concat(response.data))
+      setBlogTitle('')
+      setBlogAuthor('')
+      setBlogUrl('')
+      displayMessage(`a new blog ${response.data.title} by ${response.data.author} added`, 'green')
+
+    } catch (error) {
+      displayMessage(error.response.data.error, 'red')
+    }
   }
 
   if (user === null) {
     return (
       <div>
-        <ErrorMessage message={message}/>
+        <Notification message={message} color={messageColor}/>
         <h2>Log in to application</h2>
         <form type='submit' onSubmit={handleLogin}>
           <label>Username: </label>
-          <input id='username' value={username} onChange={({target}) => setUsername(target.value)} type='text'></input><br/>
+          <input value={username} onChange={({target}) => setUsername(target.value)} type='text'></input><br/>
           <label>Password: </label>
-          <input id='password' value={password} onChange={({target}) => setPassword(target.value)} type='password'></input><br/>
-          <input id='login' type='submit' value='Login'></input>
-        
+          <input value={password} onChange={({target}) => setPassword(target.value)} type='password'></input><br/>
+          <input type='submit' value='Login'></input>        
         </form>
       </div>
     )
@@ -69,10 +99,21 @@ const App = () => {
 
   return (
     <div>
+      <Notification message={message} color={messageColor}/>
       <h2>blogs</h2>
       <p>{user.name} logged in
         <button onClick={handleLogout}>Logout</button>
       </p>
+      <div>
+        <h2>Create new blog</h2>
+        <form onSubmit={handleCreateBlog}>
+          title:<input type='text' value={blogTitle} onChange={({target}) => setBlogTitle(target.value)}/><br/>
+          author:<input type='text' value={blogAuthor} onChange={({target}) => setBlogAuthor(target.value)}/><br/>
+          url:<input type='text' value={blogUrl} onChange={({target}) => setBlogUrl(target.value)}/><br/>
+          <input type='submit' value='create'/>
+        </form>
+      </div>
+      
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
