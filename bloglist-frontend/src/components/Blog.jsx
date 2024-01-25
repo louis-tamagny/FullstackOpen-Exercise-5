@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 
 const Blog = ({ blog, handleLike, handleRemove }) => {
   const blogStyle = {
@@ -28,6 +29,12 @@ const Blog = ({ blog, handleLike, handleRemove }) => {
       <button onClick={toggleFullView}>view</button><br/>
     </div>
   )
+}
+
+Blog.proptypes = {
+  blog: PropTypes.object.isRequired,
+  handleLike: PropTypes.func.isRequired,
+  handleRemove: PropTypes.func.isRequired
 }
 
 export default Blog
