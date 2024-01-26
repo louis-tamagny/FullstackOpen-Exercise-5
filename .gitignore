@@ -2,3 +2,6 @@ backend/node_modules
 backend/.env
 backend/rest
 bloglist-frontend/node_modules
+bloglist-frontend/.eslintrc
+bloglist-frontend/.eslintignore
+bloglist-frontend/cypress/fixtures/example.json

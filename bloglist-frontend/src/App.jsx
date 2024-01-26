@@ -110,7 +110,7 @@ const App = () => {
       <div>
         <Notification message={message} color={messageColor}/>
         <h2>Log in to application</h2>
-        <form type='submit' onSubmit={handleLogin}>
+        <form id='loginForm' type='submit' onSubmit={handleLogin}>
           <label>Username: </label>
           <input value={username} onChange={({ target }) => setUsername(target.value)} type='text'></input><br/>
           <label>Password: </label>
