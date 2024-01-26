@@ -10,7 +10,7 @@ describe('<Blog /> is rendered', () => {
   const handleLike = jest.fn()
   const handleRemove = jest.fn()
 
-  beforeEach(async () => {
+  beforeEach(() => {
     container = render(<Blog
       blog={{ title:'blog title', author:'blog author', likes: 0, url:'blog url', user:{ name:'user name' } }}
       handleLike={handleLike}
@@ -18,10 +18,20 @@ describe('<Blog /> is rendered', () => {
     />).container
   })
 
-  test('first render hides url and likes', async () => {
-    expect(await container.querySelector('#titleAuthor')).not.toBeNull()
-    expect(await container.querySelector('#url')).toBeNull()
-    expect(await container.querySelector('#likes')).toBeNull()
+  test('first render hides url and likes', () => {
+    expect(container.querySelector('#titleAuthor')).not.toBeNull()
+    expect(container.querySelector('#url')).toBeNull()
+    expect(container.querySelector('#likes')).toBeNull()
+  })
+
+  test('view button is clicked once, details are shown', async () => {
+    userEvent.setup()
+
+    const viewButton = container.querySelector('#viewButton')
+    await userEvent.click(viewButton)
+
+    expect(container.querySelector('#url')).not.toBeNull()
+    expect(container.querySelector('#likes')).not.toBeNull()
   })
 })
 
