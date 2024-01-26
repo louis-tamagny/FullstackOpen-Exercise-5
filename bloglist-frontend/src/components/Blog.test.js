@@ -33,5 +33,18 @@ describe('<Blog /> is rendered', () => {
     expect(container.querySelector('#url')).not.toBeNull()
     expect(container.querySelector('#likes')).not.toBeNull()
   })
+
+  test('like button is clicked twice, event handler called twice', async () => {
+    userEvent.setup()
+
+    const viewButton = container.querySelector('#viewButton')
+    await userEvent.click(viewButton)
+
+    const likeButton = container.querySelector('#likeButton')
+    await userEvent.click(likeButton)
+    await userEvent.click(likeButton)
+
+    expect(handleLike.mock.calls).toHaveLength(2)
+  })
 })
 

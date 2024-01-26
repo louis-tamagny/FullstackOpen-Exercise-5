@@ -17,7 +17,7 @@ const Blog = ({ blog, handleLike, handleRemove }) => {
         <div id="titleAuthor">{blog.title} {blog.author}</div>
         <button id="viewButton" onClick={toggleFullView}>hide</button><br />
         <div id="url">{blog.url}</div>
-        <div id="likes">{blog.likes}</div><button onClick={ handleLike }>like</button><br />
+        <div id="likes">{blog.likes}</div><button id='likeButton' onClick={ handleLike }>like</button><br />
         {blog.user.name}<br />
         <button style={{ backgroundColor: 'lightblue' }} onClick={ handleRemove }>remove</button>
       </div>
