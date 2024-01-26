@@ -14,10 +14,10 @@ const Blog = ({ blog, handleLike, handleRemove }) => {
   if (fullView) {
     return (
       <div style={blogStyle}>
-        {blog.title} {blog.author}
-        <button onClick={toggleFullView}>hide</button><br />
-        {blog.url}<br />
-        {blog.likes} <button onClick={ handleLike }>like</button><br />
+        <div id="titleAuthor">{blog.title} {blog.author}</div>
+        <button id="viewButton" onClick={toggleFullView}>hide</button><br />
+        <div id="url">{blog.url}</div>
+        <div id="likes">{blog.likes}</div><button onClick={ handleLike }>like</button><br />
         {blog.user.name}<br />
         <button style={{ backgroundColor: 'lightblue' }} onClick={ handleRemove }>remove</button>
       </div>
@@ -25,8 +25,8 @@ const Blog = ({ blog, handleLike, handleRemove }) => {
   }
   return (
     <div style={blogStyle}>
-      {blog.title} {blog.author}
-      <button onClick={toggleFullView}>view</button><br/>
+      <div id="titleAuthor">{blog.title} {blog.author}</div>
+      <button id="viewButton" onClick={toggleFullView}>view</button><br/>
     </div>
   )
 }
