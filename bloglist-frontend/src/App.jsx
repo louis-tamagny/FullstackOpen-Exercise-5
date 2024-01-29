@@ -39,7 +39,6 @@ const App = () => {
     event.preventDefault()
     try {
       const response = await axios.post('/api/login', { username: username, password: password })
-      console.log(response.data)
       if (response.data) {
         setUser(response.data)
         setUsername('')
@@ -69,7 +68,6 @@ const App = () => {
       blogFormRef.current.toggleVisibility()
       const completeNewUser = response.data
       completeNewUser.user = { username: user.username, name: user.name, id: user.id }
-      console.log(completeNewUser)
       setBlogs(blogs.concat(completeNewUser))
       displayMessage(`a new blog ${response.data.title} by ${response.data.author} added`, 'green')
 

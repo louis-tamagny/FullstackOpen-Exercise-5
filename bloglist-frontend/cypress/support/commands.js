@@ -8,7 +8,25 @@
 // https://on.cypress.io/custom-commands
 // ***********************************************
 //
-//
+Cypress.Commands.add('createBlog', ({title, author, url}) => {
+  cy.request({
+    method: 'POST',
+    url: 'http://localhost:3003/api/blogs',
+    body: {title, author, url},
+    headers: {
+      'Authorization': `Bearer ${JSON.parse(localStorage.getItem('loggedInUser')).token}`
+    }
+  })
+})
+
+Cypress.Commands.add('login', ({ username, password }) => {
+  cy.request('POST', 'http://localhost:3003/api/login', {
+    username, password
+  }).then(({ body }) => {
+    localStorage.setItem('loggedInUser', JSON.stringify(body))
+    cy.visit('http://localhost:5173')
+  })
+})
 // -- This is a parent command --
 // Cypress.Commands.add('login', (email, password) => { ... })
 //
